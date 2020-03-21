@@ -1,15 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace ActionResultExample
 {
@@ -25,6 +23,17 @@ namespace ActionResultExample
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            #region Swagger
+            services.AddSwaggerGen(options =>
+                {
+                    options.SwaggerDoc("v1", new OpenApiInfo() { Title = ".Net Core Action Result Test Project", Version = "v1"});
+
+                    // include all xml files in the build directory as swagger comment files
+                    List<string> xmlFiles = Directory.GetFiles(AppContext.BaseDirectory, "*.xml", SearchOption.TopDirectoryOnly).ToList();
+                    xmlFiles.ForEach(xmlFile => options.IncludeXmlComments(xmlFile));
+                });
+            #endregion
+
             services.AddControllers();
         }
 
@@ -34,6 +43,19 @@ namespace ActionResultExample
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                // Enable middleware to serve generated Swagger as a JSON endpoint.
+                app.UseSwagger();
+
+                // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+                // specifying the Swagger JSON endpoint.
+                app.UseSwaggerUI(
+
+                options =>
+                    {
+                            options.SwaggerEndpoint($"/swagger/v1/swagger.json", ".Net Core Action Result Test Project");
+                    }
+                );
             }
 
             app.UseHttpsRedirection();
