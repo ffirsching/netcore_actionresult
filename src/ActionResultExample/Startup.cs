@@ -1,3 +1,5 @@
+using Application;
+using Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -34,11 +36,13 @@ namespace ActionResultExample
                 });
             #endregion
 
+            services.AddApplication();
+            services.AddInfrastructure();
             services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider provider)
         {
             if (env.IsDevelopment())
             {
@@ -56,6 +60,7 @@ namespace ActionResultExample
                             options.SwaggerEndpoint($"/swagger/v1/swagger.json", ".Net Core Action Result Test Project");
                     }
                 );
+                app.AddTestData(provider);
             }
 
             app.UseHttpsRedirection();

@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Domain.Entities;
 
 namespace Application.Interfaces
 {
-    interface IWeatherForecastService
+    public interface IWeatherForecastService
     {
         Task<WeatherForecast> GetOne(int id);
-        Task<WeatherForecast> GetList();
+        Task<IEnumerable<WeatherForecast>> GetList();
     }
 }
