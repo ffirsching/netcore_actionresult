@@ -57,7 +57,7 @@ namespace ActionResultExample
 
                 options =>
                     {
-                            options.SwaggerEndpoint($"/swagger/v1/swagger.json", ".Net Core Action Result Test Project");
+                            options.SwaggerEndpoint($"/swagger/swagger.json", ".Net Core Action Result Test Project");
                     }
                 );
                 app.AddTestData(provider);

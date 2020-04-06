@@ -28,12 +28,12 @@ namespace Infrastructure
 
         public static void AddTestData(this IApplicationBuilder app, IServiceProvider provider)
         {
-            var context = provider.GetService<InMemoryDbContext>(); //.ApplicationServices.GetService<InMemoryDbContext>();
+            var context = provider.GetService<InMemoryDbContext>();
 
             if (context != null)
             {
                 var rng = new Random();
-                var data = Enumerable.Range(1, 5).Select(index => new WeatherForecast
+                var data = Enumerable.Range(1, 10).Select(index => new WeatherForecast
                 {
                     Id = index,
                     Date = DateTime.Now.AddDays(index),
