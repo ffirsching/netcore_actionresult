@@ -19,9 +19,9 @@ namespace Application
             return await _dbContext.WeatherForecast.ToListAsync();
         }
 
-        public Task<WeatherForecast> GetOne(int id)
+        public async Task<WeatherForecast> GetOne(int id)
         {
-            throw new NotImplementedException();
+            return await _dbContext.WeatherForecast.FindAsync(id);
         }
     }
 }

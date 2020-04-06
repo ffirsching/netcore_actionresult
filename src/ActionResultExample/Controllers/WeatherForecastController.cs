@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Application.Interfaces;
 using Domain.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Application.Interfaces;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ActionResultExample.Controllers
@@ -13,8 +11,6 @@ namespace ActionResultExample.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
-    
-
         private readonly IWeatherForecastService _repo;
 
         public WeatherForecastController(IWeatherForecastService repo)
@@ -23,9 +19,26 @@ namespace ActionResultExample.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<WeatherForecast>> Get()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<IEnumerable<WeatherForecast>>> Get()
         {
-           return await _repo.GetList();
+            return Ok(await _repo.GetList());
+        }
+
+        [HttpGet]
+        [Route("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<WeatherForecast>> GetById(int id)
+        {
+            var result = await _repo.GetOne(id);
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(result);
         }
     }
 }
