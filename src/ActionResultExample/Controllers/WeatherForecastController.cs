@@ -20,16 +20,17 @@ namespace ActionResultExample.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<WeatherForecast>>> Get()
+        public async Task<ActionResult<List<WeatherForecast>>> GetList()
         {
-            return Ok(await _repo.GetList());
+            var result = await _repo.GetList();
+            return result;
         }
 
         [HttpGet]
         [Route("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<WeatherForecast>> GetById(int id)
+        public async Task<ActionResult<WeatherForecast>> GetOne(int id)
         {
             var result = await _repo.GetOne(id);
 
@@ -38,7 +39,7 @@ namespace ActionResultExample.Controllers
                 return NotFound();
             }
 
-            return Ok(result);
+            return result;
         }
     }
 }

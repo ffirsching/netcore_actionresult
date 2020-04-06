@@ -14,7 +14,7 @@ namespace Application
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<WeatherForecast>> GetList()
+        public async Task<List<WeatherForecast>> GetList()
         {
             return await _dbContext.WeatherForecast.ToListAsync();
         }

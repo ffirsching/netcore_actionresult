@@ -8,6 +8,6 @@ namespace Application.Interfaces
     public interface IWeatherForecastService
     {
         Task<WeatherForecast> GetOne(int id);
-        Task<IEnumerable<WeatherForecast>> GetList();
+        Task<List<WeatherForecast>> GetList();
     }
 }
