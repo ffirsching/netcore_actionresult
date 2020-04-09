@@ -34,7 +34,7 @@ namespace UnitTests.WeatherForecasts
 
             // assert
             Assert.IsType<ActionResult<List<WeatherForecast>>>(result);
-            Assert.Equal(expected, result.Value); // Using Value since ReturnType is ActionResult<List<Author>>, so we need to access the value
+            Assert.Equal(expected, result.Value); // Using Value since ReturnType is ActionResult<List<WeatherForecast>>, so we need to access the value
         }
 
         [Fact(DisplayName = "Should return correct weather forecast by id")]
@@ -48,7 +48,7 @@ namespace UnitTests.WeatherForecasts
 
             // assert
             Assert.IsType<ActionResult<WeatherForecast>>(result);
-            Assert.Equal(expected, result.Value); // Using Value since ReturnType is ActionResult<Author>, so we need to access the value
+            Assert.Equal(expected, result.Value); // Using Value since ReturnType is ActionResult<WeatherForecast>, so we need to access the value
         }
 
         [Fact(DisplayName = "Should return NotFound()")]
