@@ -1,7 +1,9 @@
 using ActionResultExample.Controllers;
 using Application;
+using Application.Interfaces;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +11,7 @@ using Xunit;
 
 namespace UnitTests.WeatherForecasts
 {
-    public class WeatherForecastControllerTest: IDisposable
+    public class WeatherForecastControllerTest : IDisposable
     {
 
         private readonly WeatherForecastDbFixture fixture;
@@ -19,8 +21,11 @@ namespace UnitTests.WeatherForecasts
         {
             fixture = new WeatherForecastDbFixture();
             Console.WriteLine(fixture.DbContext.WeatherForecast.ToList().ToString());
-            var forecastService = new WeatherForecastService(fixture.DbContext);
-            controller = new WeatherForecastController(forecastService);
+            var forecastService = new Mock<IWeatherForecastService>();
+            forecastService.Setup(s => s.GetList()).ReturnsAsync(fixture.forecastList);
+            forecastService.Setup(s => s.GetOne(It.IsAny<int>()))
+            .ReturnsAsync((int x) => fixture.forecastList.Where(forecast => forecast.Id == x).FirstOrDefault());
+            controller = new WeatherForecastController(forecastService.Object);
         }
 
         [Fact(DisplayName = "Should return all weather forecasts")]
