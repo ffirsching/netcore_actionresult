@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Application.Models;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,26 @@ namespace ActionResultExample.Controllers
         public WeatherForecastController(IWeatherForecastService repo)
         {
             _repo = repo;
+        }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Create(CreateWeatherForecastDto forecast)
+        {
+            try
+            {
+                var createdEntity = await _repo.Create(forecast);
+
+                var uri = $"{Url.PageLink()}/{createdEntity.Id}";
+
+                return Created(uri, createdEntity);
+            }
+            catch (System.Exception)
+            {
+
+                return BadRequest();
+            }
         }
 
         [HttpGet]
