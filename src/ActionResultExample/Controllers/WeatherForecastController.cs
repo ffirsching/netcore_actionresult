@@ -28,7 +28,7 @@ namespace ActionResultExample.Controllers
             {
                 var createdEntity = await _repo.Create(forecast);
 
-                var uri = $"{Url.PageLink()}/{createdEntity.Id}";
+                var uri = $"{Url?.PageLink()}/{createdEntity.Id}";
 
                 return Created(uri, createdEntity);
             }
