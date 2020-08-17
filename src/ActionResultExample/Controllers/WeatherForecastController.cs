@@ -3,6 +3,7 @@ using Application.Models;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -24,6 +25,11 @@ namespace ActionResultExample.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create(CreateWeatherForecastDto forecast)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
             try
             {
                 var createdEntity = await _repo.Create(forecast);
@@ -32,10 +38,10 @@ namespace ActionResultExample.Controllers
 
                 return Created(uri, createdEntity);
             }
-            catch (System.Exception)
+            catch (Exception)
             {
 
-                return BadRequest();
+               return UnprocessableEntity();
             }
         }
 
