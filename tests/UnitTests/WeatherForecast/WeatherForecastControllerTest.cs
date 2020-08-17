@@ -65,6 +65,7 @@ namespace UnitTests.WeatherForecasts
             // assert
             var expected = fixture.forecastList.Last();
 
+            Assert.IsAssignableFrom<IActionResult>(result);
             Assert.IsType<CreatedResult>(result); // check correct return type
 
             var actual = (CreatedResult) result;
